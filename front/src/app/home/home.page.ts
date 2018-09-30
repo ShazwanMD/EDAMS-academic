@@ -17,7 +17,7 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this._titleService.setTitle('PAMS Universiti Malaysia Kelantan');
+    this._titleService.setTitle('EDAMS Universiti Malaysia Kelantan');
   }
 
   ngOnInit(): void {
