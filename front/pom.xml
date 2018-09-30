@@ -35,7 +35,7 @@
         <version>1.4</version>
         <configuration>
           <workingDirectory>${project.basedir}</workingDirectory>
-          <nodeVersion>v6.10.2</nodeVersion>
+          <nodeVersion>v8.11.3</nodeVersion>
         </configuration>
         <executions>
           <execution>
@@ -106,7 +106,7 @@
             <version>1.4</version>
             <configuration>
               <workingDirectory>${project.basedir}</workingDirectory>
-              <nodeVersion>v6.10.2</nodeVersion>
+              <nodeVersion>v8.11.3</nodeVersion>
             </configuration>
             <executions>
               <execution>
