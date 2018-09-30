@@ -268,9 +268,9 @@
                         </goals>
                         <configuration>
                             <driver>org.postgresql.Driver</driver>
-                            <url>jdbc:postgresql://localhost:5432/academic</url>
-                            <username>academic</username>
-                            <password>academic</password>
+                            <url>jdbc:postgresql://localhost:5432/edamsad</url>
+                            <username>edamsad</username>
+                            <password>edamsad</password>
 
                             <autocommit>true</autocommit>
                             <srcFiles>
