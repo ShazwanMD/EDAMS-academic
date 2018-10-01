@@ -128,11 +128,11 @@ VALUES (nextval('SQ_AD_PCPL'), 'bursary', TRUE, TRUE, 0, 1, 1, CURRENT_TIMESTAMP
 INSERT INTO AD_USER (ID, REAL_NAME, EMAIL, PASSWORD)
 VALUES (currval('SQ_AD_PCPL'), 'PAMS PTJ BURSARY', 'ptj-bursary@gmail.com', 'abc123');
 
---INSERT INTO AD_PCPL (ID, NAME, ENABLED, LOCKED, PRINCIPAL_TYPE, M_ST, C_ID, C_TS) 
---VALUES (nextval('SQ_AD_PCPL'), 'student10', TRUE, TRUE, 0, 1, 1, CURRENT_TIMESTAMP);
---
---INSERT INTO AD_USER (ID, REAL_NAME, EMAIL, PASSWORD)
---VALUES (currval('SQ_AD_PCPL'), 'SITI SAMIYA BINTI RUSLI', 'siti.samiya@umk.edu.my', 'abc123');
+INSERT INTO AD_PCPL (ID, NAME, ENABLED, LOCKED, PRINCIPAL_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL'), 'student10', TRUE, TRUE, 0, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_USER (ID, REAL_NAME, EMAIL, PASSWORD)
+VALUES (currval('SQ_AD_PCPL'), 'SITI SAMIYA BINTI RUSLI', 'siti.samiya@umk.edu.my', 'abc123');
 ---------------------------------------------------------
 -- GROUP START
 ---------------------------------------------------------
@@ -1319,12 +1319,12 @@ VALUES (nextval('SQ_AD_GROP_MMBR'),
 --		(SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_MGSEB'),
 --        (SELECT ID FROM AD_PCPL WHERE NAME = 'mgseb-login'), 1, 1, CURRENT_TIMESTAMP);	
 
------ add Student10 to Group Member        
---INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS) 
---VALUES (nextval('SQ_AD_GROP_MMBR'),
---		(SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_STDN'),
---        (SELECT ID FROM AD_PCPL WHERE NAME = 'student10'), 1, 1, CURRENT_TIMESTAMP);
---		
+--- add Student10 to Group Member        
+INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_GROP_MMBR'),
+		(SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_STDN'),
+        (SELECT ID FROM AD_PCPL WHERE NAME = 'student10'), 1, 1, CURRENT_TIMESTAMP);
+		
 ----DrNoraini MGSEB
 --INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS) 
 --VALUES (nextval('SQ_AD_GROP_MMBR'),
