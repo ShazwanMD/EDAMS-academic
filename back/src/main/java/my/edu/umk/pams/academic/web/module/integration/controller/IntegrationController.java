@@ -98,10 +98,10 @@ public class IntegrationController {
 
 	@Autowired
 	private ProfileService profileService;
-	
-	//=======================================================================================
-	//	Program Field Code
-	//=======================================================================================
+
+	// =======================================================================================
+	// Program Field Code
+	// =======================================================================================
 	@RequestMapping(value = "/programCodes", method = RequestMethod.POST)
 	public ResponseEntity<String> saveProgramFieldCode(@RequestBody ProgramCodePayload payload) {
 		SecurityContext ctx = loginAsSystem();
@@ -113,7 +113,7 @@ public class IntegrationController {
 		programCode.setFaculty(plannerService.findFacultyByCode(payload.getFacultyCode().getCode()));
 		programCode.setLevel(plannerService.findProgramLevelByCode(payload.getProgramLevel().getCode()));
 		programCode.setStatus(AdProgramStatus.ACTIVE);
-		
+
 		plannerService.saveProgram(programCode);
 
 		logoutAsSystem(ctx);
@@ -1173,13 +1173,13 @@ public class IntegrationController {
 		student.setBalance(payload.getBalance());
 		student.setOutstanding(payload.isOutstanding());
 		student.setStudentStatus(AdStudentStatus.get(payload.getStudentStatus().ordinal()));
-		
-		if(payload.isOutstanding()==true){
-			
+
+		if (payload.isOutstanding() == true) {
+
 			LOG.info("Student Has Outstanding Payment");
 			student.setMemo("Outstanding Payments");
-		}else{
-			
+		} else {
+
 			LOG.info("Student Has No Outstanding Payment");
 			student.setMemo("Active");
 		}
@@ -1224,7 +1224,12 @@ public class IntegrationController {
 		student.setPhone(payload.getPhone());
 		student.setMobile(payload.getMobile());
 		student.setNoID(payload.getUserPayload().getNric());
-		student.setGenderCode(commonService.findGenderCodeByCode(payload.getGender()));
+		if(payload.getGender().equals("1")){
+			student.setGenderCode(commonService.findGenderCodeByCode("L"));	
+		}else{
+			student.setGenderCode(commonService.findGenderCodeByCode("P"));
+		}
+		
 		student.setMaritalCode(commonService.findMaritalCodeByCode(payload.getMartialStatus()));
 		student.setRaceCode(commonService.findRaceCodeByCode(payload.getRace()));
 		student.setReligionCode(commonService.findReligionCodeByCode(payload.getReligion()));
@@ -1300,19 +1305,11 @@ public class IntegrationController {
 		AdAdmission admission = new AdAdmissionImpl();
 		admission.setSession(session);
 		admission.setStudent(student);
-		admission.setOrdinal(1);
+		admission.setOrdinal(0);
 
 		// Advisor
-		if (payload.getFacultyCode().getCode().equals("A10")) {
-			admission.setAdvisor(null);
-		} else {
-			if(payload.getSupervisorCode() != null){
-				AdStaff advisor = identityService.findStaffByIdentityNo(payload.getSupervisorCode());
-				admission.setAdvisor(advisor);				
-			}
-			LOG.debug("SupervisorCode null !");
-			admission.setAdvisor(null);
-		}
+		admission.setAdvisor(null);
+
 		LOG.info("Finish Supervisor");
 
 		admission.setCgpa(BigDecimal.ZERO);
@@ -1322,16 +1319,10 @@ public class IntegrationController {
 		admission.setStatus(AdAdmissionStatus.REGULAR);
 
 		// StudyCenter
-		if (payload.getFacultyCode().getCode().equals("A10")) {
-			LOG.debug("Faculty:{}", payload.getFacultyCode());
 
-			String studyCenterCode = payload.getStudyCenter().getCode();
-			admission.setStudyCenter(commonService.findStudyCenterByCode(studyCenterCode));
-		} else {
-			LOG.debug("Faculty:{}", payload.getFacultyCode());
-			LOG.info("StudyCenter NULL");
-			admission.setStudyCenter(null);
-		}
+		String studyCenterCode = payload.getStudyCenter().getCode();
+		admission.setStudyCenter(commonService.findStudyCenterByCode(studyCenterCode));
+
 		LOG.info("Finish StudyCenter");
 
 		termService.saveAdmission(admission);

@@ -41,6 +41,7 @@ public class EnrollmentApplicationRouter extends RouterServiceSupport {
     static {
         strategies.put("MGSEB", new MGSEBRouterStrategy());
         strategies.put("CPS", new CPSRouterStrategy());
+        strategies.put("UMKCEE", new UMKCEERouterStrategy());
     }
 
     public List<String> findRegistererCandidates(Long enrollmentApplicationId) {

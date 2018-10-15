@@ -1,0 +1,2 @@
+INSERT INTO AD_ACDM_SESN(id,code,current_,description,end_date,semester,start_date,enroll_startdate,enroll_enddate,admission_startdate,admission_enddate,graduation_startdate,graduation_enddate,year_id,m_st,c_id,c_ts,status) 
+VALUES (NEXTVAL('SQ_AD_ACDM_SESN'),20181,TRUE,'SEMESTER SEPTEMBER SESI AKADEMIK 2018-2019','31-Jan-19',1,'1-Sep-18','1-Sep-18','31-Jan-19','1-Sep-18','31-Jan-19','14-Oct-22','18-Oct-22',(SELECT ID FROM AD_ACDM_YEAR WHERE CODE='20181'),1,1,CURRENT_TIMESTAMP,0);

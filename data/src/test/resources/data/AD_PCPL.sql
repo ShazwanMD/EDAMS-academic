@@ -133,6 +133,21 @@ VALUES (nextval('SQ_AD_PCPL'), 'student10', TRUE, TRUE, 0, 1, 1, CURRENT_TIMESTA
 
 INSERT INTO AD_USER (ID, REAL_NAME, EMAIL, PASSWORD)
 VALUES (currval('SQ_AD_PCPL'), 'SITI SAMIYA BINTI RUSLI', 'siti.samiya@umk.edu.my', 'abc123');
+
+--UMKCEE_KRN
+INSERT INTO AD_PCPL (ID, NAME, ENABLED, LOCKED, PRINCIPAL_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL'), 'umkcee-kerani', TRUE, TRUE, 0, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_USER (ID, REAL_NAME, EMAIL, PASSWORD)
+VALUES (currval('SQ_AD_PCPL'), 'UMKCEE Kerani', 'umkcee-kerani@umk.edu.my', 'abc123');
+
+--UMKCEE_PGW
+INSERT INTO AD_PCPL (ID, NAME, ENABLED, LOCKED, PRINCIPAL_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL'), 'umkcee-pegawai', TRUE, TRUE, 0, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_USER (ID, REAL_NAME, EMAIL, PASSWORD)
+VALUES (currval('SQ_AD_PCPL'), 'UMKCEE Pegawai', 'umkcee-pegawai@umk.edu.my', 'abc123');
+
 ---------------------------------------------------------
 -- GROUP START
 ---------------------------------------------------------
@@ -186,6 +201,19 @@ INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS)
 VALUES (nextval('SQ_AD_GROP_MMBR'),
 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_ADM'),
 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_ADM_A10'), 1, 1, CURRENT_TIMESTAMP);
+
+-- GROUP ADMIN UMKCEE
+INSERT INTO AD_PCPL (ID, NAME, ENABLED, LOCKED, PRINCIPAL_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL'), 'GRP_ADM_UMKCEE', TRUE, TRUE, 1, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_GROP (ID) VALUES (currval('SQ_AD_PCPL'));
+
+INSERT INTO AD_PCPL_ROLE (ID, PRINCIPAL_ID, ROLE_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL_ROLE'), (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_ADM'), 0, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS) VALUES (nextval('SQ_AD_GROP_MMBR'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_ADM'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_ADM_UMKCEE'), 1, 1, CURRENT_TIMESTAMP);
 
 -- ADMIN CPS
 INSERT INTO AD_PCPL (ID, NAME, ENABLED, LOCKED, PRINCIPAL_TYPE, M_ST, C_ID, C_TS) 
@@ -1336,6 +1364,43 @@ VALUES (nextval('SQ_AD_GROP_MMBR'),
 --VALUES (nextval('SQ_AD_GROP_MMBR'),
 --(SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_DKN_FCTY_A01'),
 --(SELECT ID FROM AD_PCPL WHERE NAME = 'cps-dekan'), 1, 1, CURRENT_TIMESTAMP);
+
+        
+        -- KERANI UMKCEE
+INSERT INTO AD_PCPL (ID, NAME, ENABLED, LOCKED, PRINCIPAL_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL'), 'GRP_KRN_ADM_UMKCEE', TRUE, TRUE, 1, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_GROP (ID) VALUES (currval('SQ_AD_PCPL'));
+
+INSERT INTO AD_PCPL_ROLE (ID, PRINCIPAL_ID, ROLE_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL_ROLE'), (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_KRN_ADM_UMKCEE'), 0, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS) VALUES (nextval('SQ_AD_GROP_MMBR'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_ADM_UMKCEE'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_KRN_ADM_UMKCEE'), 1, 1, CURRENT_TIMESTAMP);
+
+-- PEGAWAI UMKCEE
+INSERT INTO AD_PCPL (ID, NAME, ENABLED, LOCKED, PRINCIPAL_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL'), 'GRP_PGW_ADM_UMKCEE', TRUE, TRUE, 1, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_GROP (ID) VALUES (currval('SQ_AD_PCPL'));
+
+INSERT INTO AD_PCPL_ROLE (ID, PRINCIPAL_ID, ROLE_TYPE, M_ST, C_ID, C_TS) 
+VALUES (nextval('SQ_AD_PCPL_ROLE'), (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_PGW_ADM_UMKCEE'), 0, 1, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS) VALUES (nextval('SQ_AD_GROP_MMBR'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_ADM_UMKCEE'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_PGW_ADM_UMKCEE'), 1, 1, CURRENT_TIMESTAMP);
+																				 
+--PEGAWAI UMKCEE
+INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS) VALUES (nextval('SQ_AD_GROP_MMBR'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_PGW_ADM_UMKCEE'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'umkcee-pegawai'), 1, 1, CURRENT_TIMESTAMP);	
+
+--KERANI UMKCEE
+INSERT INTO AD_GROP_MMBR (ID, GROUP_ID, PRINCIPAL_ID, M_ST, C_ID, C_TS) VALUES (nextval('SQ_AD_GROP_MMBR'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'GRP_KRN_ADM_UMKCEE'),
+                                                                                 (SELECT ID FROM AD_PCPL WHERE NAME = 'umkcee-kerani'), 1, 1, CURRENT_TIMESTAMP);	
 	
 
 
