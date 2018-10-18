@@ -23,14 +23,14 @@ export class HomePage implements OnInit, AfterViewInit {
   ngOnInit(): void {
     {
       this.items = [
-        {
-          title: 'Intake',
-          route: '/login',
-          icon: 'assignment',
-          color: 'blue-700',
-          description: '',
-        }
-        ,
+        // {
+        //   title: 'Intake',
+        //   route: 'http://edams.umk.edu.my:8082',
+        //   icon: 'assignment',
+        //   color: 'blue-700',
+        //   description: '',
+        // }
+        // ,
         {
           title: 'Academic',
           route: '/login',
@@ -38,13 +38,13 @@ export class HomePage implements OnInit, AfterViewInit {
           color: 'blue-700',
           description: '',
         },
-        {
-          title: 'Account',
-          route: '/login',
-          icon: 'assignment',
-          color: 'blue-700',
-          description: '',
-        },
+        // {
+        //   title: 'Account',
+        //   route: '/login',
+        //   icon: 'assignment',
+        //   color: 'blue-700',
+        //   description: '',
+        // },
       ];
     }
   }
