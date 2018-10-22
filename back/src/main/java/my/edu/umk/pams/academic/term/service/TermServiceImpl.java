@@ -891,7 +891,6 @@ public class TermServiceImpl implements TermService {
 		StudentPayload studentPayload = new StudentPayload();
 		studentPayload.setMatricNo(student.getMatricNo());
 		studentPayload.setName(student.getName());
-		studentPayload.setStudentStatus(StudentStatus.get(student.getStudentStatus().ordinal()));
 		LOG.debug("Broadcast studentPayload:{}",studentPayload.getMatricNo());
 		
 		StudyModePayload studyModePayload = new StudyModePayload();
