@@ -43,6 +43,8 @@ public interface AdCourseDao extends GenericDao<Long, AdCourse> {
     Integer count(AdProgram program);
 
     boolean isExists(String code, AdFaculty faculty);
+    
+    boolean isOnlyExists(String code);
 
     boolean isPrerequisite(AdCourse course, AdCourse prerequisite);
 

@@ -47,11 +47,15 @@ import my.edu.umk.pams.academic.identity.model.AdStudentStatus;
 import my.edu.umk.pams.academic.identity.model.AdUser;
 import my.edu.umk.pams.academic.identity.model.AdUserImpl;
 import my.edu.umk.pams.academic.identity.service.IdentityService;
+import my.edu.umk.pams.academic.planner.model.AdAcademicClassification;
 import my.edu.umk.pams.academic.planner.model.AdAcademicSession;
 import my.edu.umk.pams.academic.planner.model.AdAcademicStanding;
 import my.edu.umk.pams.academic.planner.model.AdAdmissionStatus;
 import my.edu.umk.pams.academic.planner.model.AdCohort;
 import my.edu.umk.pams.academic.planner.model.AdCohortImpl;
+import my.edu.umk.pams.academic.planner.model.AdCourse;
+import my.edu.umk.pams.academic.planner.model.AdCourseImpl;
+import my.edu.umk.pams.academic.planner.model.AdCourseStatus;
 import my.edu.umk.pams.academic.planner.model.AdFaculty;
 import my.edu.umk.pams.academic.planner.model.AdFacultyImpl;
 import my.edu.umk.pams.academic.planner.model.AdProgram;
@@ -68,6 +72,7 @@ import my.edu.umk.pams.academic.web.module.planner.controller.PlannerTransformer
 import my.edu.umk.pams.academic.web.module.planner.vo.AcademicSession;
 import my.edu.umk.pams.connector.payload.AccountPayload;
 import my.edu.umk.pams.connector.payload.CandidatePayload;
+import my.edu.umk.pams.connector.payload.EdamsCoursePayload;
 import my.edu.umk.pams.connector.payload.FacultyCodePayload;
 import my.edu.umk.pams.connector.payload.ProgramCodePayload;
 import my.edu.umk.pams.connector.payload.StaffPayload;
@@ -98,6 +103,84 @@ public class IntegrationController {
 
 	@Autowired
 	private ProfileService profileService;
+	// ====================================================================================================
+	// EDAMS OFFERED COURSES
+	// ====================================================================================================
+
+	@RequestMapping(value = "/edamsCourses", method = RequestMethod.POST)
+	public ResponseEntity<String> saveEdamsCourses(@RequestBody List<EdamsCoursePayload> edamsCoursePayloads) {
+		SecurityContext ctx = loginAsSystem();
+
+		LOG.info("Start Receive EdamsCoursePayload");
+
+		for (EdamsCoursePayload payload : edamsCoursePayloads) {
+
+			LOG.debug("EdamsCoursePayload:{}", payload.getCode());
+
+			if (plannerService.isCourseOnlyExists(payload.getCode())) {
+
+				LOG.info("Course Already Exists");
+
+				if (payload.getFacultyCode() != null) {
+
+					AdFaculty faculty = plannerService.findFacultyByCode(payload.getFacultyCode());
+					AdCourse course = plannerService.findCourseByCode(payload.getCode());
+					course.setCode(payload.getCode());
+					// Convert BigDecimal to Integer
+					course.setCredit(Integer.valueOf(payload.getCredit().intValue()));
+
+					course.setTitleEn(payload.getTitleEn());
+					course.setTitleMs(payload.getTitleMs());
+					course.setStatus(AdCourseStatus.ACTIVE);
+					course.setClassification(AdAcademicClassification.LEVEL_GRADUATED);
+					course.setFaculty(faculty);
+
+					plannerService.updateCourse(faculty, course);
+				} else {
+
+					AdFaculty faculty = plannerService.findFacultyByCode("A01");
+					AdCourse course = plannerService.findCourseByCode(payload.getCode());
+					course.setCode(payload.getCode());
+					// Convert BigDecimal to Integer
+					course.setCredit(Integer.valueOf(payload.getCredit().intValue()));
+					course.setTitleEn(payload.getTitleEn());
+					course.setTitleMs(payload.getTitleMs());
+					course.setStatus(AdCourseStatus.ACTIVE);
+					course.setClassification(AdAcademicClassification.LEVEL_GRADUATED);
+					course.setFaculty(faculty);
+
+					plannerService.updateCourse(faculty, course);
+
+				}
+
+			} else {
+				LOG.info("Course Not Exists");
+
+				AdCourse course = new AdCourseImpl();
+				course.setCode(payload.getCode());
+				// Convert BigDecimal to Integer
+				course.setCredit(Integer.valueOf(payload.getCredit().intValue()));
+				course.setTitleEn(payload.getTitleEn());
+				course.setTitleMs(payload.getTitleMs());
+				course.setStatus(AdCourseStatus.ACTIVE);
+				course.setClassification(AdAcademicClassification.LEVEL_GRADUATED);
+
+				if (payload.getFacultyCode().isEmpty()) {
+					course.setFaculty(plannerService.findFacultyByCode("A01"));
+				} else {
+
+					AdFaculty faculty = plannerService.findFacultyByCode(payload.getFacultyCode());
+					LOG.debug("Faculty:{}", faculty.getCode());
+					course.setFaculty(faculty);
+
+				}
+				plannerService.saveCourse(course);
+			}
+		}
+		LOG.info("Finish Receive Faculty");
+		logoutAsSystem(ctx);
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
 
 	// =======================================================================================
 	// Program Field Code
@@ -1224,12 +1307,12 @@ public class IntegrationController {
 		student.setPhone(payload.getPhone());
 		student.setMobile(payload.getMobile());
 		student.setNoID(payload.getUserPayload().getNric());
-		if(payload.getGender().equals("1")){
-			student.setGenderCode(commonService.findGenderCodeByCode("L"));	
-		}else{
+		if (payload.getGender().equals("1")) {
+			student.setGenderCode(commonService.findGenderCodeByCode("L"));
+		} else {
 			student.setGenderCode(commonService.findGenderCodeByCode("P"));
 		}
-		
+
 		student.setMaritalCode(commonService.findMaritalCodeByCode(payload.getMartialStatus()));
 		student.setRaceCode(commonService.findRaceCodeByCode(payload.getRace()));
 		student.setReligionCode(commonService.findReligionCodeByCode(payload.getReligion()));

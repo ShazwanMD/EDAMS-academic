@@ -324,6 +324,8 @@ public interface PlannerService {
 
     boolean isCourseExists(String code, AdFaculty faculty);
     
+    boolean isCourseOnlyExists(String code);
+    
     void saveCourse(AdCourse course);
     
     /*void saveCourse(AdCourse course , AdFaculty faculty);*/

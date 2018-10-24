@@ -202,6 +202,17 @@ public class AdCourseDaoImpl extends GenericDaoSupport<Long, AdCourse> implement
         query.setInteger("state", AdMetaState.ACTIVE.ordinal());
         return 0 < ((Long) query.uniqueResult()).intValue();
     }
+    
+    @Override
+    public boolean isOnlyExists(String code) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select count(*) from AdCourse s where " +
+                "s.code = :code " +
+                "and s.metadata.state = :state ");
+        query.setString("code", code);
+        query.setInteger("state", AdMetaState.ACTIVE.ordinal());
+        return 0 < ((Long) query.uniqueResult()).intValue();
+    }
 
     @Override
     public boolean isPrerequisite(AdCourse course, AdCourse prerequisite) {

@@ -1019,6 +1019,11 @@ public class PlannerServiceImpl implements PlannerService {
 	public boolean isCourseExists(String code, AdFaculty faculty) {
 		return courseDao.isExists(code, faculty);
 	}
+	
+	@Override
+	public boolean isCourseOnlyExists(String code) {
+		return courseDao.isOnlyExists(code);
+	}
 
 	/*
 	 * @Override public void saveCourse(AdCourse course, AdFaculty faculty) {
